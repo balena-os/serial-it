@@ -106,6 +106,10 @@ case $BOARD in
             echo "enable_uart=1" >> $BOOT_MOUNTPOINT/config.txt
         fi
         ;;
+    qemux86-64)
+        serialdev=ttyS0
+        baudrate=9600
+        ;;
     *)
         echo "[ERROR] Unsupported board."
         exit 1
