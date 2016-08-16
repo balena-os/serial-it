@@ -14,7 +14,7 @@ Options:
     --root-mountpoint PATH
         Mandatory argument.
 
-    -boot-mountpoint PATH
+    --boot-mountpoint PATH
 
     -b, --board BOARD
         Mandatory argument.
@@ -116,16 +116,6 @@ case $BOARD in
         ;;
 esac
 
-# Copy serial getty service
-FILES=$SCRIPTPATH/files
-echo "[INFO] Copying $FILES/serial-getty@.service in $ROOT_MOUNTPOINT ..."
-if [ -f $ROOT_MOUNTPOINT/lib/systemd/system/serial-getty@.service ]; then
-    echo "[WARN] $ROOT_MOUNTPOINT/lib/systemd/system/serial-getty@.service already exists in the root mountpoint"
-else
-    mkdir -p $ROOT_MOUNTPOINT/lib/systemd/system
-    cp $FILES/serial-getty@.service $ROOT_MOUNTPOINT/lib/systemd/system/serial-getty@.service
-fi
-
 # Enable getty
 echo "[INFO] Enable service in $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${serialdev}.service ..."
 if [ -f $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${serialdev}.service ]; then
@@ -151,7 +141,7 @@ else
 fi
 
 echo
-echo "[INFO] Serial configuation done."
+echo "[INFO] Serial configuration done."
 echo "[INFO] Make sure you use baudrate=$baudrate in your terminal emulator tool. Ex: minicom."
 
 #
