@@ -143,6 +143,7 @@ fi
 echo
 echo "[INFO] Serial configuration done."
 echo "[INFO] Make sure you use baudrate=$baudrate in your terminal emulator tool. Ex: minicom."
+echo "[NOTE] If your using a development image make you sure you use baudrate=115200"
 
 #
 # TODO - kernel console
