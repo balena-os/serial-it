@@ -70,14 +70,27 @@ if [[ $EUID -ne 0 ]]; then
 fi
 echo "[INFO] Root detected ... ok."
 
+# Make sure the board has been specified
 if [ -z "$BOARD" ]; then
     echo "[ERROR] No board specified"
     exit 1
 fi
+echo "[INFO] Board detected ... ok."
 
-if [ ! -d $MOUNTPOINT ]; then
-    echo "[ERROR] Mountpoint $MOUNTPOINT doesn't exist."
+# Make sure the root mountpoint has been specified
+if [ ! -d $ROOT_MOUNTPOINT ]; then
+    echo "[ERROR] Root mountpoint $ROOT_MOUNTPOINT doesn't exist."
     exit 1
+fi
+echo "[INFO] Root mountpoint detected ... ok."
+
+# Make sure the boot mountpoint has been specified if needed
+if [ "$BOARD" == "raspberry-pi3" ]; then
+    if [ -z "$BOOT_MOUNTPOINT" ] || [ ! -f $BOOT_MOUNTPOINT/config.txt ]; then
+        echo "[ERROR] A valid boot mountpoint is needed."
+        exit 1
+    fi
+    echo "[INFO] Boot mountpoint detected ... ok."
 fi
 
 # Board specific stuff
@@ -90,15 +103,12 @@ case $BOARD in
         serialdev=ttyAMA0
         baudrate=9600
         ;;
-    raspberrypi3)
+    raspberry-pi3)
         # This assumes pi3-miniuart-bt-overlay.dtb is not used
         serialdev=ttyS0
         baudrate=9600
+
         # Raspberrypi3 needs a stable CORE freq - https://github.com/RPi-Distro/repo/issues/22
-        if [ -z "$BOOT_MOUNTPOINT" ] || [ ! -f $BOOT_MOUNTPOINT/config.txt ]; then
-            echo "[ERROR] A valid boot mountpoint is needed."
-            exit 1
-        fi
         echo "[INFO] Setting 'enable_uart=1' in $BOOT_MOUNTPOINT/config.txt ."
         if grep -Fxq "enable_uart=1" $BOOT_MOUNTPOINT/config.txt; then
             echo "[WARN] $BOOT_MOUNTPOINT/config.txt already contains 'enable_uart=1'."
@@ -113,6 +123,10 @@ case $BOARD in
     qemux86-64)
         serialdev=ttyS0
         baudrate=9600
+        ;;
+    intel-edison)
+        serialdev=ttyMFD2
+        baudrate=115200
         ;;
     *)
         echo "[ERROR] Unsupported board."
@@ -144,7 +158,6 @@ else
     echo "[WARN] $ROOT_MOUNTPOINT/etc/shadow doesn't exist."
 fi
 
-echo
 echo "[INFO] Serial configuration done."
 echo "[INFO] Make sure you use baudrate=$baudrate in your terminal emulator tool. Ex: minicom."
 echo "[NOTE] If your using a development image make you sure you use baudrate=115200"
