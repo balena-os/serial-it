@@ -85,7 +85,7 @@ fi
 echo "[INFO] Root mountpoint detected ... ok."
 
 # Make sure the boot mountpoint has been specified if needed
-if [ "$BOARD" == "raspberry-pi3" ]; then
+if [ "$BOARD" == "raspberrypi3" ]; then
     if [ -z "$BOOT_MOUNTPOINT" ] || [ ! -f $BOOT_MOUNTPOINT/config.txt ]; then
         echo "[ERROR] A valid boot mountpoint is needed."
         exit 1
@@ -103,7 +103,7 @@ case $BOARD in
         serialdev=ttyAMA0
         baudrate=9600
         ;;
-    raspberry-pi3)
+    raspberrypi3)
         # This assumes pi3-miniuart-bt-overlay.dtb is not used
         serialdev=ttyS0
         baudrate=9600
