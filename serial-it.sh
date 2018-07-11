@@ -128,6 +128,10 @@ case $BOARD in
         serialdev=ttyMFD2
         baudrate=115200
         ;;
+    odroid-c1)
+        serialdev=ttyAML0
+        baudrate=115200
+        ;;
     *)
         echo "[ERROR] Unsupported board."
         exit 1
