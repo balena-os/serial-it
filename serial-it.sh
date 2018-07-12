@@ -129,7 +129,7 @@ case $BOARD in
         baudrate=115200
         ;;
     odroid-c1)
-        serialdev=ttyAML0
+        serialdev=ttyS0
         baudrate=115200
         ;;
     *)
