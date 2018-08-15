@@ -144,7 +144,7 @@ if [ -f $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${se
     echo "[WARN] $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${serialdev}.service already exists."
 else
     mkdir -p $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants
-    cp $ROOT_MOUNTPOINT/lib/systemd/system/serial-getty@.service $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${serialdev}.service
+    ln -sf $ROOT_MOUNTPOINT/lib/systemd/system/serial-getty@.service $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${serialdev}.service
     sed -i -e s/\@BAUDRATE\@/$baudrate/g $ROOT_MOUNTPOINT/etc/systemd/system/getty.target.wants/serial-getty@${serialdev}.service
 fi
 
