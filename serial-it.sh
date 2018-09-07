@@ -128,6 +128,10 @@ case $BOARD in
         serialdev=ttyMFD2
         baudrate=115200
         ;;
+    iot2000)
+        serialdev=ttyS1
+        baudrate=115200
+        ;;
     odroid-c1)
         serialdev=ttyS0
         baudrate=115200
